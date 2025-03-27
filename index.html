@@ -132,7 +132,7 @@
   <audio id="sound-correct" src="sounds/correct.mp3"></audio>
   <audio id="sound-wrong" src="sounds/wrong.mp3"></audio>
   <audio id="sound-goal" src="sounds/goal.mp3"></audio>
-  <audio id="sound-zannen" src="sounds/zannen.mp3"></audio>
+  <audio id="sound-sad" src="sounds/sad.mp3"></audio>
 </div>
 <script>
 const quizData = [
@@ -204,7 +204,7 @@ function answer(choice) {
 
 function showResult() {
   const correctSound = document.getElementById("sound-goal");
-  const wrongSound = document.getElementById("sound-zannen");
+  const wrongSound = document.getElementById("sound-sad");
 
   // 再生の準備（毎回リセット）
   correctSound.pause();
@@ -227,7 +227,7 @@ function showResult() {
   } else {
     document.getElementById("quiz-image").src = "images/fail.png";
     result.innerText = `まだ危険がいっぱい…学び直そう！ (${score}/5問 正解)`;
-    wrongSound.play().catch(e => console.warn("zannen.mp3 再生エラー:", e));
+    wrongSound.play().catch(e => console.warn("sad.mp3 再生エラー:", e));
   }
 
   const tweetText = encodeURIComponent(`私はセキュリティOXクイズで ${score}/5 問 正解！ #セキュリティヒーロー #OXクイズ`);
