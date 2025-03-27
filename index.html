@@ -198,6 +198,7 @@ function answer(choice) {
 }
 
 function showResult() {
+  document.getElementById("question").innerText = "";
   const correctSound = document.getElementById("sound-goal");
   const wrongSound = document.getElementById("sound-sad");
 
@@ -240,3 +241,4 @@ showQuestion();
 </script>
 </body>
 </html>
+
