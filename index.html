@@ -221,7 +221,8 @@ function showResult() {
 
   if (score === 5) {
     document.getElementById("quiz-image").src = "images/success.png";
-    result.innerText = "あなたは家族を完全に守りました！セキュリティヒーロー！🛡️";
+    result.innerText = "あなたは家族を完全に守りました！
+セキュリティヒーロー！🛡️";
     correctSound.play().then(() => console.log("goal.mp3 再生成功")).catch(e => console.warn("goal.mp3 再生エラー:", e));
   } else {
     document.getElementById("quiz-image").src = "images/fail.png";
