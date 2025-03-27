@@ -191,8 +191,18 @@ function showResult() {
   if (score === 5) {
     document.getElementById("quiz-image").src = "images/success.png";
     result.innerText = "あなたは家族を完全に守りました！セキュリティヒーロー！🛡️";
-    correctSound.play();
+    correctSound.play().catch(e => console.warn("goal.mp3 再生エラー:", e));
   } else {
+    document.getElementById("quiz-image").src = "images/fail.png";
+    result.innerText = `まだ危険がいっぱい…学び直そう！ (${score}/5問 正解)`;
+    wrongSound.play().catch(e => console.warn("zannen.mp3 再生エラー:", e));
+  }
+
+  const tweetText = encodeURIComponent(`私はセキュリティOXクイズで ${score}/5 問 正解！ #セキュリティヒーロー #OXクイズ`);
+  const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(location.href)}`;
+  share.href = tweetUrl;
+  actions.style.display = "block";
+} else {
     document.getElementById("quiz-image").src = "images/fail.png";
     result.innerText = `まだ危険がいっぱい…学び直そう！ (${score}/5問 正解)`;
     wrongSound.play();
