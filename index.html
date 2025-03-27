@@ -67,6 +67,7 @@
       font-size: 1.4em;
       font-weight: bold;
       margin-top: 20px;
+      white-space: pre-line;
     }
     #actions {
       margin-top: 30px;
@@ -152,6 +153,13 @@ function showQuestion() {
   const q = quizData[current];
   const img = document.getElementById("quiz-image");
 
+  img.onload = () => {
+    img.style.display = "block";
+    document.getElementById("question").innerText = `Q${current + 1}: ${q.question}`;
+    document.querySelector(".buttons").style.display = "flex";
+    document.querySelector(".buttons").style.justifyContent = "center";
+  };
+
   img.style.display = "none";
   document.getElementById("question").innerText = "";
   document.getElementById("feedback").innerText = "";
@@ -159,15 +167,7 @@ function showQuestion() {
   document.getElementById("actions").style.display = "none";
   document.querySelector(".buttons").style.display = "none";
 
-  if (current < quizData.length) {
-    img.onload = () => {
-      img.style.display = "block";
-      document.getElementById("question").innerText = `Q${current + 1}: ${q.question}`;
-      document.querySelector(".buttons").style.display = "flex";
-      document.querySelector(".buttons").style.justifyContent = "center";
-    };
-    img.src = q.image;
-  }
+  img.src = q.image;
 }
 
 function answer(choice) {
@@ -176,20 +176,18 @@ function answer(choice) {
   const correctSound = document.getElementById("sound-correct");
   const wrongSound = document.getElementById("sound-wrong");
 
-  correctSound.pause();
-  correctSound.currentTime = 0;
-  wrongSound.pause();
-  wrongSound.currentTime = 0;
+  correctSound.pause(); correctSound.currentTime = 0;
+  wrongSound.pause(); wrongSound.currentTime = 0;
 
   if (isCorrect) {
     score++;
     feedback.innerText = "正解！🎉 よく守った！";
     feedback.style.color = "green";
-    correctSound.play().catch(e => console.warn("correct.mp3 再生エラー:", e));
+    correctSound.play().catch(e => console.warn("再生エラー:", e));
   } else {
     feedback.innerText = "不正解…😢 油断大敵！";
     feedback.style.color = "red";
-    wrongSound.play().catch(e => console.warn("wrong.mp3 再生エラー:", e));
+    wrongSound.play().catch(e => console.warn("再生エラー:", e));
   }
 
   current++;
@@ -201,31 +199,31 @@ function answer(choice) {
 }
 
 function showResult() {
-  document.getElementById("question").innerText = "";
   const correctSound = document.getElementById("sound-goal");
   const wrongSound = document.getElementById("sound-sad");
-
-  correctSound.pause();
-  correctSound.currentTime = 0;
-  wrongSound.pause();
-  wrongSound.currentTime = 0;
-
-  document.getElementById("quiz-image").style.display = "block";
-  document.querySelector(".buttons").style.display = "none";
-  document.getElementById("feedback").innerText = "";
+  const img = document.getElementById("quiz-image");
   const result = document.getElementById("result");
   const actions = document.getElementById("actions");
   const share = document.getElementById("share-button");
 
+  correctSound.pause(); correctSound.currentTime = 0;
+  wrongSound.pause(); wrongSound.currentTime = 0;
+
+  document.getElementById("question").innerText = "";
+  document.querySelector(".buttons").style.display = "none";
+  document.getElementById("feedback").innerText = "";
+
   if (score === 5) {
-    document.getElementById("quiz-image").src = "images/success.png";
+    img.src = "images/success.png";
     result.innerText = "あなたは家族を完全に守りました！\nセキュリティヒーロー！🛡️";
-    correctSound.play().catch(e => console.warn("goal.mp3 再生エラー:", e));
+    correctSound.play().catch(e => console.warn("再生エラー:", e));
   } else {
-    document.getElementById("quiz-image").src = "images/fail.png";
+    img.src = "images/fail.png";
     result.innerText = `まだ危険がいっぱい…学び直そう！ (${score}/5問 正解)`;
-    wrongSound.play().catch(e => console.warn("sad.mp3 再生エラー:", e));
+    wrongSound.play().catch(e => console.warn("再生エラー:", e));
   }
+
+  img.style.display = "block";
 
   const tweetText = encodeURIComponent(`私はセキュリティOXクイズで ${score}/5 問 正解！ #セキュリティヒーロー #OXクイズ`);
   const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(location.href)}`;
