@@ -150,7 +150,6 @@ function showQuestion() {
   const q = quizData[current];
   const img = document.getElementById("quiz-image");
 
-  // 一旦非表示＆初期化
   img.style.display = "none";
   document.getElementById("question").innerText = "";
   document.getElementById("feedback").innerText = "";
@@ -158,7 +157,6 @@ function showQuestion() {
   document.getElementById("actions").style.display = "none";
   document.querySelector(".buttons").style.display = "none";
 
-  // 読み込み後に表示
   img.onload = () => {
     img.style.display = "block";
     document.getElementById("question").innerText = `Q${current + 1}: ${q.question}`;
@@ -167,30 +165,6 @@ function showQuestion() {
   };
 
   img.src = q.image;
-}: ${q.question}`;
-    document.querySelector(".buttons").style.display = "flex";
-    document.querySelector(".buttons").style.justifyContent = "center";
-  };
-
-  img.src = q.image;
-}: ${q.question}`;
-    document.getElementById("feedback").innerText = "";
-    document.getElementById("result").innerText = "";
-    document.querySelector(".buttons").style.display = "flex";
-    document.querySelector(".buttons").style.justifyContent = "center";
-    document.getElementById("actions").style.display = "none";
-  };
-  img.src = q.image;
-  img.style.display = "block";
-}: ${q.question}`;
-  const img = document.getElementById("quiz-image");
-  img.src = q.image;
-  img.style.display = "block";
-  document.getElementById("feedback").innerText = "";
-  document.getElementById("result").innerText = "";
-  document.querySelector(".buttons").style.display = "flex";
-  document.querySelector(".buttons").style.justifyContent = "center";
-  document.getElementById("actions").style.display = "none";
 }
 
 function answer(choice) {
