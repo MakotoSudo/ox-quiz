@@ -149,8 +149,22 @@ let score = 0;
 function showQuestion() {
   const q = quizData[current];
   const img = document.getElementById("quiz-image");
+
+  img.style.display = "none";
+  document.getElementById("question").innerText = "";
+  document.getElementById("feedback").innerText = "";
+  document.getElementById("result").innerText = "";
+  document.getElementById("actions").style.display = "none";
+
   img.onload = () => {
+    img.style.display = "block";
     document.getElementById("question").innerText = `Q${current + 1}: ${q.question}`;
+    document.querySelector(".buttons").style.display = "flex";
+    document.querySelector(".buttons").style.justifyContent = "center";
+  };
+
+  img.src = q.image;
+}: ${q.question}`;
     document.getElementById("feedback").innerText = "";
     document.getElementById("result").innerText = "";
     document.querySelector(".buttons").style.display = "flex";
@@ -219,7 +233,7 @@ function showResult() {
 
   if (score === 5) {
     document.getElementById("quiz-image").src = "images/success.png";
-    result.innerText = "あなたは家族を完全に守りました！🛡️";
+    result.innerText = "あなたは家族を完全に守りました！セキュリティヒーロー！🛡️";
     correctSound.play().then(() => console.log("goal.mp3 再生成功")).catch(e => console.warn("goal.mp3 再生エラー:", e));
   } else {
     document.getElementById("quiz-image").src = "images/fail.png";
