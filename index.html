@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>家族を守れ！セキュリティOXクイズ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      text-align: center;
+      color: #333;
+    }
+    .quiz-container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 10px;
+      color: #222;
+    }
+    #intro {
+      font-size: 1em;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    #question {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+    #quiz-image {
+      display: block;
+      margin: 0 auto 20px auto;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+    }
+    .buttons button {
+      background: none;
+      border: none;
+      margin: 10px;
+      padding: 0;
+      cursor: pointer;
+    }
+    .buttons img {
+      width: 200px;
+      height: 131px;
+      transition: transform 0.2s;
+    }
+    .buttons img:hover {
+      transform: scale(1.1);
+    }
+    #feedback {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin: 20px 0;
+      min-height: 40px;
+    }
+    #result {
+      font-size: 1.4em;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    #actions {
+      margin-top: 30px;
+    }
+    #actions button, #actions a {
+      font-size: 1em;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+    }
+    #actions button:hover, #actions a:hover {
+      background-color: #0056b3;
+    }
+    @media (max-width: 600px) {
+      .quiz-container {
+        margin: 20px;
+        padding: 20px;
+      }
+      #quiz-image {
+        width: 100%;
+      }
+      .buttons img {
+        width: 150px;
+        height: 98px;
+      }
+    }
+  </style>
+</head>
+<body>
+<script>
+  const PASSWORD = "disfeequiz";
+  const input = prompt("このページを見るにはパスワードを入力してください：");
+  if (input !== PASSWORD) {
+    alert("パスワードが違います。ページを閉じます。");
+    window.location.href = "https://google.com";
+  }
+</script>
+<div class="quiz-container">
+  <h1>家族を守れ！セキュリティOXクイズ</h1>
+  <div id="intro">あなたのセキュリティ知識、試してみませんか？</div>
+  <div id="question"></div>
+  <img id="quiz-image" src="" style="display: none;" />
+  <div class="buttons">
+    <button onclick="answer('O')">
+      <img src="images/o.png" alt="O">
+    </button>
+    <button onclick="answer('X')">
+      <img src="images/x.png" alt="X">
+    </button>
+  </div>
+  <div id="feedback"></div>
+  <div id="result"></div>
+  <div id="actions" style="display: none;">
+    <button onclick="restartQuiz()">もう一度挑戦</button>
+    <a id="share-button" href="#" target="_blank">結果をシェア</a>
+  </div>
+  <audio id="sound-goal" src="sounds/goal.mp3"></audio>
+  <audio id="sound-zannen" src="sounds/zannen.mp3"></audio>
+</div>
+<script>
+const quizData = [
+  { question: "無料Wi-Fiは安全なのでパスワードがなくても安心して使える。", correctAnswer: "X", image: "images/q1.png" },
+  { question: "怪しいメールのリンクをクリックしてはいけない。", correctAnswer: "O", image: "images/q2.png" },
+  { question: "ウイルス対策ソフトは最新の状態にしておくべきである。", correctAnswer: "O", image: "images/q3.png" },
+  { question: "ネットにアップした写真は後から完全に削除できる。", correctAnswer: "X", image: "images/q4.png" },
+  { question: "SNSの投稿は全世界の誰でも見られる可能性がある。", correctAnswer: "O", image: "images/q5.png" }
+];
+
+let current = 0;
+let score = 0;
+
+function showQuestion() {
+  const q = quizData[current];
+  document.getElementById("question").innerText = `Q${current + 1}: ${q.question}`;
+  const img = document.getElementById("quiz-image");
+  img.src = q.image;
+  img.style.display = "block";
+  document.getElementById("feedback").innerText = "";
+  document.getElementById("result").innerText = "";
+  document.querySelector(".buttons").style.display = "flex";
+  document.querySelector(".buttons").style.justifyContent = "center";
+  document.getElementById("actions").style.display = "none";
+}
+
+function answer(choice) {
+  const isCorrect = choice === quizData[current].correctAnswer;
+  const feedback = document.getElementById("feedback");
+  if (isCorrect) {
+    score++;
+    feedback.innerText = "正解！🎉 よく守った！";
+    feedback.style.color = "green";
+  } else {
+    feedback.innerText = "不正解…😢 油断大敵！";
+    feedback.style.color = "red";
+  }
+  current++;
+  if (current < quizData.length) {
+    setTimeout(showQuestion, 1500);
+  } else {
+    setTimeout(showResult, 1500);
+  }
+}
+
+function showResult() {
+  const correctSound = document.getElementById("sound-goal");
+  const wrongSound = document.getElementById("sound-zannen");
+
+  document.getElementById("question").innerText = "";
+  document.getElementById("quiz-image").style.display = "block";
+  document.querySelector(".buttons").style.display = "none";
+  document.getElementById("feedback").innerText = "";
+  const result = document.getElementById("result");
+  const actions = document.getElementById("actions");
+  const share = document.getElementById("share-button");
+
+  if (score === 5) {
+    document.getElementById("quiz-image").src = "images/success.png";
+    result.innerText = "あなたは家族を完全に守りました！セキュリティヒーロー！🛡️";
+    correctSound.play();
+  } else {
+    document.getElementById("quiz-image").src = "images/fail.png";
+    result.innerText = `まだ危険がいっぱい…学び直そう！ (${score}/5問 正解)`;
+    wrongSound.play();
+  }
+
+  const tweetText = encodeURIComponent(`私はセキュリティOXクイズで ${score}/5 問 正解！ #セキュリティヒーロー #OXクイズ`);
+  const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(location.href)}`;
+  share.href = tweetUrl;
+  actions.style.display = "block";
+}
+
+function restartQuiz() {
+  current = 0;
+  score = 0;
+  showQuestion();
+}
+
+showQuestion();
+</script>
+</body>
+</html>
