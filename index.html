@@ -157,14 +157,16 @@ function showQuestion() {
   document.getElementById("actions").style.display = "none";
   document.querySelector(".buttons").style.display = "none";
 
-  img.onload = () => {
-    img.style.display = "block";
-    document.getElementById("question").innerText = `Q${current + 1}: ${q.question}`;
-    document.querySelector(".buttons").style.display = "flex";
-    document.querySelector(".buttons").style.justifyContent = "center";
-  };
+  if (current < quizData.length) {
+    img.onload = () => {
+      img.style.display = "block";
+      document.getElementById("question").innerText = `Q${current + 1}: ${q.question}`;
+      document.querySelector(".buttons").style.display = "flex";
+      document.querySelector(".buttons").style.justifyContent = "center";
+    };
+    img.src = q.image;
+  }
 
-  img.src = q.image;
 }
 
 function answer(choice) {
@@ -241,4 +243,3 @@ showQuestion();
 </script>
 </body>
 </html>
-
