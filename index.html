@@ -165,6 +165,12 @@ function answer(choice) {
   const correctSound = document.getElementById("sound-correct");
   const wrongSound = document.getElementById("sound-wrong");
 
+  // 停止してから再生（音が重なるのを防止）
+  correctSound.pause();
+  correctSound.currentTime = 0;
+  wrongSound.pause();
+  wrongSound.currentTime = 0;
+
   if (isCorrect) {
     score++;
     feedback.innerText = "正解！🎉 よく守った！";
@@ -182,11 +188,29 @@ function answer(choice) {
   } else {
     setTimeout(showResult, 1500);
   }
+} else {
+    feedback.innerText = "不正解…😢 油断大敵！";
+    feedback.style.color = "red";
+    wrongSound.play().catch(e => console.warn("wrong.mp3 再生エラー:", e));
+  }
+
+  current++;
+  if (current < quizData.length) {
+    setTimeout(showQuestion, 1500);
+  } else {
+    setTimeout(showResult, 1500);
+  }
 }
 
 function showResult() {
   const correctSound = document.getElementById("sound-goal");
   const wrongSound = document.getElementById("sound-zannen");
+
+  // 再生の準備（毎回リセット）
+  correctSound.pause();
+  correctSound.currentTime = 0;
+  wrongSound.pause();
+  wrongSound.currentTime = 0;
 
   document.getElementById("question").innerText = "";
   document.getElementById("quiz-image").style.display = "block";
@@ -201,6 +225,16 @@ function showResult() {
     result.innerText = "あなたは家族を完全に守りました！セキュリティヒーロー！🛡️";
     correctSound.play().catch(e => console.warn("goal.mp3 再生エラー:", e));
   } else {
+    document.getElementById("quiz-image").src = "images/fail.png";
+    result.innerText = `まだ危険がいっぱい…学び直そう！ (${score}/5問 正解)`;
+    wrongSound.play().catch(e => console.warn("zannen.mp3 再生エラー:", e));
+  }
+
+  const tweetText = encodeURIComponent(`私はセキュリティOXクイズで ${score}/5 問 正解！ #セキュリティヒーロー #OXクイズ`);
+  const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(location.href)}`;
+  share.href = tweetUrl;
+  actions.style.display = "block";
+} else {
     document.getElementById("quiz-image").src = "images/fail.png";
     result.innerText = `まだ危険がいっぱい…学び直そう！ (${score}/5問 正解)`;
     wrongSound.play().catch(e => console.warn("zannen.mp3 再生エラー:", e));
