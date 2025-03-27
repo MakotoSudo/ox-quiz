@@ -160,11 +160,27 @@ function showQuestion() {
 function answer(choice) {
   const isCorrect = choice === quizData[current].correctAnswer;
   const feedback = document.getElementById("feedback");
+  const correctSound = document.getElementById("sound-correct");
+  const wrongSound = document.getElementById("sound-wrong");
+
   if (isCorrect) {
     score++;
     feedback.innerText = "正解！🎉 よく守った！";
     feedback.style.color = "green";
+    correctSound.play().catch(e => console.warn("correct.mp3 再生エラー:", e));
   } else {
+    feedback.innerText = "不正解…😢 油断大敵！";
+    feedback.style.color = "red";
+    wrongSound.play().catch(e => console.warn("wrong.mp3 再生エラー:", e));
+  }
+
+  current++;
+  if (current < quizData.length) {
+    setTimeout(showQuestion, 1500);
+  } else {
+    setTimeout(showResult, 1500);
+  }
+} else {
     feedback.innerText = "不正解…😢 油断大敵！";
     feedback.style.color = "red";
   }
