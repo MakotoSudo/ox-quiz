@@ -129,10 +129,10 @@
     <button onclick="restartQuiz()">もう一度挑戦</button>
     <a id="share-button" href="#" target="_blank">結果をシェア</a>
   </div>
-  <audio id="sound-correct" src="sounds/correct.mp3"></audio>
-  <audio id="sound-wrong" src="sounds/wrong.mp3"></audio>
-  <audio id="sound-goal" src="sounds/goal.mp3"></audio>
-  <audio id="sound-sad" src="sounds/sad.mp3"></audio>
+  <audio id="sound-correct" src="sounds/correct.mp3" preload="auto"></audio>
+  <audio id="sound-wrong" src="sounds/wrong.mp3" preload="auto"></audio>
+  <audio id="sound-goal" src="sounds/goal.mp3" preload="auto"></audio>
+  <audio id="sound-sad" src="sounds/sad.mp3" preload="auto"></audio>
 </div>
 <script>
 const quizData = [
@@ -174,11 +174,11 @@ function answer(choice) {
     score++;
     feedback.innerText = "正解！🎉 よく守った！";
     feedback.style.color = "green";
-    correctSound.play().catch(e => console.warn("correct.mp3 再生エラー:", e));
+    correctSound.play().then(() => console.log("correct.mp3 再生成功")).catch(e => console.warn("correct.mp3 再生エラー:", e));
   } else {
     feedback.innerText = "不正解…😢 油断大敵！";
     feedback.style.color = "red";
-    wrongSound.play().catch(e => console.warn("wrong.mp3 再生エラー:", e));
+    wrongSound.play().then(() => console.log("wrong.mp3 再生成功")).catch(e => console.warn("wrong.mp3 再生エラー:", e));
   }
 
   current++;
@@ -209,11 +209,11 @@ function showResult() {
   if (score === 5) {
     document.getElementById("quiz-image").src = "images/success.png";
     result.innerText = "あなたは家族を完全に守りました！セキュリティヒーロー！🛡️";
-    correctSound.play().catch(e => console.warn("goal.mp3 再生エラー:", e));
+    correctSound.play().then(() => console.log("goal.mp3 再生成功")).catch(e => console.warn("goal.mp3 再生エラー:", e));
   } else {
     document.getElementById("quiz-image").src = "images/fail.png";
     result.innerText = `まだ危険がいっぱい…学び直そう！ (${score}/5問 正解)`;
-    wrongSound.play().catch(e => console.warn("sad.mp3 再生エラー:", e));
+    wrongSound.play().then(() => console.log("sad.mp3 再生成功")).catch(e => console.warn("sad.mp3 再生エラー:", e));
   }
 
   const tweetText = encodeURIComponent(`私はセキュリティOXクイズで ${score}/5 問 正解！ #セキュリティヒーロー #OXクイズ`);
